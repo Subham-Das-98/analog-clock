@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Clock - Using html, css, javaScript</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@500&family=Anek+Latin:wght@200&family=Anek+Malayalam&family=Baloo+Bhai+2&family=Josefin+Sans:wght@600&family=Philosopher&family=Roboto&family=Sacramento&family=Style+Script&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@500&family=Anek+Latin:wght@200&family=Anek+Malayalam&family=Baloo+Bhai+2&family=Josefin+Sans:wght@600&family=Orbitron:wght@500&family=Philosopher&family=Roboto&family=Sacramento&family=Style+Script&family=Tourney:wght@500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(3, 90, 68);
+  
+        }
+
+        /* main frame  */
+        .frame {
+            border: 8px solid rgb(90, 1, 75);
+            background-color: rgb(32, 28, 28);
+            box-shadow: inset 0px 0px 50px rgb(0, 0, 0), inset 0px -100px 120px rgba(0, 0, 0, 0.75), 0px 10px 20px rgba(0,0,0,0.7);
+            border-radius: 50%;
+            margin-inline: auto;
+            margin-top: 2rem;
+            width: 550px;
+            aspect-ratio: 1/1;
+            display: flex;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .frame .center {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            background-color: rgb(230, 13, 56);
+            position: absolute;
+            z-index: 4;
+        }
+
+        /* hands designing and positioning  */
+        .hands-frame {
+            /* border:2px solid blue; */
+            height: 50%;
+            position: absolute;
+            display: flex;
+        }
+
+        #second-frame {
+            /* transition:0.3s; */
+            z-index: 3;
+        }
+
+        #second-frame #second-hand {
+            width: 3px;
+            height: 60%;
+            background-color: rgb(230, 13, 56);
+
+        }
+
+        #minute-frame {
+            z-index: 2;
+        }
+
+        #minute-frame #minute-hand {
+            width: 7px;
+            height: 34%;
+            margin-top: 37px;
+            border-radius: 5px;
+            background-color: rgba(173, 255, 230, 0.950);
+        }
+
+        #hour-frame {
+            z-index: 1;
+        }
+
+        #hour-frame #hour-hand {
+            width: 9px;
+            height: 23%;
+            border-radius: 8px;
+            margin-top: 65px;
+            background-color: rgba(242, 209, 255, 0.950);
+            /* background-color: rgb(25, 111, 182); */
+        }
+
+        /* hour numbers design and positioning  */
+        .frame .hour-num {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            font-size: 2.2rem;
+            font-family: 'Albert Sans', Arial, Helvetica, sans-serif;
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            background-color: rgb(32, 31, 31);
+            border: 2px solid rgb(0, 0, 0);
+            box-shadow: inset 0px 0px 15px rgba(5, 5, 5, 0.945);
+
+            /* border: 2px solid rgb(255, 115, 0); */
+            /* box-shadow: inset 2px 2px 7px rgba(255, 115, 0, 0.151), inset -2px -2px 7px rgba(255, 115, 0, 0.185); */
+
+            color: rgba(233, 57, 130, 0.884);
+        }
+
+        .frame #h0 {
+            top: 2px;
+        }
+
+        .frame #h1 {
+            top: 34px;
+            right: 122px;
+        }
+
+        .frame #h2 {
+            top: 122px;
+            right: 34px;
+        }
+
+        .frame #h3 {
+            right: 2px;
+        }
+
+        .frame #h4 {
+            bottom: 122px;
+            right: 34px;
+        }
+
+        .frame #h5 {
+            bottom: 34px;
+            right: 122px;
+        }
+
+        .frame #h6 {
+            bottom: 2px;
+        }
+
+        .frame #h7 {
+            bottom: 34px;
+            left: 122px;
+        }
+
+        .frame #h8 {
+            bottom: 122px;
+            left: 34px;
+        }
+
+        .frame #h9 {
+            left: 2px;
+        }
+
+        .frame #h10 {
+            top: 122px;
+            left: 34px;
+        }
+
+        .frame #h11 {
+            top: 34px;
+            left: 122px;
+        }
+
+        /* minute design and positioning  */
+        .frame .sec-min-frame {
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            align-items: center;
+        }
+
+        .frame .sec-min-frame .the-mins {
+            height: 4%;
+            width: 4px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 8px black;
+            background-color: rgba(57, 65, 62, 0.712);
+            transition: 0.3s;
+            /* background-color: rgba(35, 247, 159, 0.733);  while-on in script*/
+        }
+
+        /* special case for the 0th second */
+        .frame .sec-min-frame #m0 {
+            height: 2.3%;
+            width: 10px;
+            border-radius: 50%;
+            margin-top: 7px;
+        }
+
+        /* seconds in side min frame*/
+        .frame .sec-min-frame .the-secs {
+            height: 9px;
+            width: 9px;
+            border-radius: 50%;
+            margin-top: 15px;
+            transition: 0.2s;
+            background-color: rgba(57, 65, 62, 0.712);
+            /* background-color: rgb(247, 152, 10);  while-on in script*/
+        }
+
+        .frame #min0 {
+            transform: rotate(0deg);
+        }
+
+        .frame #min1 {
+            transform: rotate(6deg);
+        }
+
+        .frame #min2 {
+            transform: rotate(12deg);
+        }
+
+        .frame #min3 {
+            transform: rotate(18deg);
+        }
+
+        .frame #min4 {
+            transform: rotate(24deg);
+        }
+
+        .frame #min5 {
+            transform: rotate(30deg);
+        }
+
+        .frame #min6 {
+            transform: rotate(36deg);
+        }
+
+        .frame #min7 {
+            transform: rotate(42deg);
+        }
+
+        .frame #min8 {
+            transform: rotate(48deg);
+        }
+
+        .frame #min9 {
+            transform: rotate(54deg);
+        }
+
+        .frame #min10 {
+            transform: rotate(60deg);
+        }
+
+        .frame #min11 {
+            transform: rotate(66deg);
+        }
+
+        .frame #min12 {
+            transform: rotate(72deg);
+        }
+
+        .frame #min13 {
+            transform: rotate(78deg);
+        }
+
+        .frame #min14 {
+            transform: rotate(84deg);
+        }
+
+        .frame #min15 {
+            transform: rotate(90deg);
+        }
+
+        .frame #min16 {
+            transform: rotate(96deg);
+        }
+
+        .frame #min17 {
+            transform: rotate(102deg);
+        }
+
+        .frame #min18 {
+            transform: rotate(108deg);
+        }
+
+        .frame #min19 {
+            transform: rotate(114deg);
+        }
+
+        .frame #min20 {
+            transform: rotate(120deg);
+        }
+
+        .frame #min21 {
+            transform: rotate(126deg);
+        }
+
+        .frame #min22 {
+            transform: rotate(132deg);
+        }
+
+        .frame #min23 {
+            transform: rotate(138deg);
+        }
+
+        .frame #min24 {
+            transform: rotate(144deg);
+        }
+
+        .frame #min25 {
+            transform: rotate(150deg);
+        }
+
+        .frame #min26 {
+            transform: rotate(156deg);
+        }
+
+        .frame #min27 {
+            transform: rotate(162deg);
+        }
+
+        .frame #min28 {
+            transform: rotate(168deg);
+        }
+
+        .frame #min29 {
+            transform: rotate(174deg);
+        }
+
+        .frame #min30 {
+            transform: rotate(180deg);
+        }
+
+        .frame #min31 {
+            transform: rotate(186deg);
+        }
+
+        .frame #min32 {
+            transform: rotate(192deg);
+        }
+
+        .frame #min33 {
+            transform: rotate(198deg);
+        }
+
+        .frame #min34 {
+            transform: rotate(204deg);
+        }
+
+        .frame #min35 {
+            transform: rotate(210deg);
+        }
+
+        .frame #min36 {
+            transform: rotate(216deg);
+        }
+
+        .frame #min37 {
+            transform: rotate(222deg);
+        }
+
+        .frame #min38 {
+            transform: rotate(228deg);
+        }
+
+        .frame #min39 {
+            transform: rotate(234deg);
+        }
+
+        .frame #min40 {
+            transform: rotate(240deg);
+        }
+
+        .frame #min41 {
+            transform: rotate(246deg);
+        }
+
+        .frame #min42 {
+            transform: rotate(252deg);
+        }
+
+        .frame #min43 {
+            transform: rotate(258deg);
+        }
+
+        .frame #min44 {
+            transform: rotate(264deg);
+        }
+
+        .frame #min45 {
+            transform: rotate(270deg);
+        }
+
+        .frame #min46 {
+            transform: rotate(276deg);
+        }
+
+        .frame #min47 {
+            transform: rotate(282deg);
+        }
+
+        .frame #min48 {
+            transform: rotate(288deg);
+        }
+
+        .frame #min49 {
+            transform: rotate(294deg);
+        }
+
+        .frame #min50 {
+            transform: rotate(300deg);
+        }
+
+        .frame #min51 {
+            transform: rotate(306deg);
+        }
+
+        .frame #min52 {
+            transform: rotate(312deg);
+        }
+
+        .frame #min53 {
+            transform: rotate(318deg);
+        }
+
+        .frame #min54 {
+            transform: rotate(324deg);
+        }
+
+        .frame #min55 {
+            transform: rotate(330deg);
+        }
+
+        .frame #min56 {
+            transform: rotate(336deg);
+        }
+
+        .frame #min57 {
+            transform: rotate(342deg);
+        }
+
+        .frame #min58 {
+            transform: rotate(348deg);
+        }
+
+        .frame #min59 {
+            transform: rotate(354deg);
+        }
+
+        /* display design and positioning  */
+        .display {
+            height: 30px;
+            width: 80px;
+            border: 3px solid rgba(128, 206, 50, 0.733);
+            position: absolute;
+            bottom: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 0px 3px rgb(0, 0, 0);
+        }
+
+        .display .in-display {
+            width: 50%;
+            height: 100%;
+            border: 1px solid rgb(19, 20, 17);
+            /* background-color: rgb(120, 175, 212);      */
+            /* box-shadow: inset 1px 1px 15px rgb(32, 154, 235), inset -1px -1px 15px rgb(32, 154, 235);   */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Orbitron', Arial, Helvetica, sans-serif;
+            font-weight: 600;
+            color: rgba(22, 23, 24, 0.904);
+            background: none;
+            transition: 0.2s;
+        }
+
+
+        @media(max-width:600px) {
+
+            body {
+                width: 600px;
+                position: relative;
+                top: 120px;
+            }
+
+        }
+
+        /* angle tracker */
+        /* .angle-tracker { */
+        /* height:99%; */
+        /* width:3px; */
+        /* position:absolute; */
+        /* background-color: green; */
+        /* transform:rotate(150deg);                   tracker here **************** */
+        /* z-index: 10; */
+        /* } */
+    </style>
+</head>
+
+<!-- *************************************************** -->
+
+<body>
+    <div class="frame" id="frame">
+        <!-- center reference  -->
+
+        <div class="center" id="center"></div>
+
+        <!-- second-minute-hour hands -->
+        <div class="hands-frame" id="second-frame">
+            <div id="second-hand"></div>
+        </div>
+        <div class="hands-frame" id="minute-frame">
+            <div id="minute-hand"></div>
+        </div>
+        <div class="hands-frame" id="hour-frame">
+            <div id="hour-hand"></div>
+        </div>
+
+        <!-- meradian display  -->
+        <div class="display" id="meridian-display">
+            <div class="in-display" id="am-dp">AM</div>
+            <div class="in-display" id="pm-dp">PM</div>
+        </div>
+
+        <!-- hour-numbers  -->
+        <div class="hour-num" id="h1">1</div>
+        <div class="hour-num" id="h2">2</div>
+        <div class="hour-num" id="h3">3</div>
+        <div class="hour-num" id="h4">4</div>
+        <div class="hour-num" id="h5">5</div>
+        <div class="hour-num" id="h6">6</div>
+        <div class="hour-num" id="h7">7</div>
+        <div class="hour-num" id="h8">8</div>
+        <div class="hour-num" id="h9">9</div>
+        <div class="hour-num" id="h10">10</div>
+        <div class="hour-num" id="h11">11</div>
+        <div class="hour-num" id="h0">12</div>
+
+        <div class="angle-tracker"></div> <!-- angle tracker for positioning  -->
+
+        <!-- minute-meter and seconds tracker  -->
+        <div class="sec-min-frame" id="min0">
+            <div class="the-mins" id="m0"></div>
+            <div class="the-secs" id="sec0"></div>
+        </div>
+        <div class="sec-min-frame" id="min1">
+            <div class="the-mins" id="m1"></div>
+            <div class="the-secs" id="sec1"></div>
+        </div>
+        <div class="sec-min-frame" id="min2">
+            <div class="the-mins" id="m2"></div>
+            <div class="the-secs" id="sec2"></div>
+        </div>
+        <div class="sec-min-frame" id="min3">
+            <div class="the-mins" id="m3"></div>
+            <div class="the-secs" id="sec3"></div>
+        </div>
+        <div class="sec-min-frame" id="min4">
+            <div class="the-mins" id="m4"></div>
+            <div class="the-secs" id="sec4"></div>
+        </div>
+        <div class="sec-min-frame" id="min5">
+            <div class="the-mins" id="m5"></div>
+            <div class="the-secs" id="sec5"></div>
+        </div>
+        <div class="sec-min-frame" id="min6">
+            <div class="the-mins" id="m6"></div>
+            <div class="the-secs" id="sec6"></div>
+        </div>
+        <div class="sec-min-frame" id="min7">
+            <div class="the-mins" id="m7"></div>
+            <div class="the-secs" id="sec7"></div>
+        </div>
+        <div class="sec-min-frame" id="min8">
+            <div class="the-mins" id="m8"></div>
+            <div class="the-secs" id="sec8"></div>
+        </div>
+        <div class="sec-min-frame" id="min9">
+            <div class="the-mins" id="m9"></div>
+            <div class="the-secs" id="sec9"></div>
+        </div>
+        <div class="sec-min-frame" id="min10">
+            <div class="the-mins" id="m10"></div>
+            <div class="the-secs" id="sec10"></div>
+        </div>
+        <div class="sec-min-frame" id="min11">
+            <div class="the-mins" id="m11"></div>
+            <div class="the-secs" id="sec11"></div>
+        </div>
+        <div class="sec-min-frame" id="min12">
+            <div class="the-mins" id="m12"></div>
+            <div class="the-secs" id="sec12"></div>
+        </div>
+        <div class="sec-min-frame" id="min13">
+            <div class="the-mins" id="m13"></div>
+            <div class="the-secs" id="sec13"></div>
+        </div>
+        <div class="sec-min-frame" id="min14">
+            <div class="the-mins" id="m14"></div>
+            <div class="the-secs" id="sec14"></div>
+        </div>
+        <div class="sec-min-frame" id="min15">
+            <div class="the-mins" id="m15"></div>
+            <div class="the-secs" id="sec15"></div>
+        </div>
+        <div class="sec-min-frame" id="min16">
+            <div class="the-mins" id="m16"></div>
+            <div class="the-secs" id="sec16"></div>
+        </div>
+        <div class="sec-min-frame" id="min17">
+            <div class="the-mins" id="m17"></div>
+            <div class="the-secs" id="sec17"></div>
+        </div>
+        <div class="sec-min-frame" id="min18">
+            <div class="the-mins" id="m18"></div>
+            <div class="the-secs" id="sec18"></div>
+        </div>
+        <div class="sec-min-frame" id="min19">
+            <div class="the-mins" id="m19"></div>
+            <div class="the-secs" id="sec19"></div>
+        </div>
+        <div class="sec-min-frame" id="min20">
+            <div class="the-mins" id="m20"></div>
+            <div class="the-secs" id="sec20"></div>
+        </div>
+        <div class="sec-min-frame" id="min21">
+            <div class="the-mins" id="m21"></div>
+            <div class="the-secs" id="sec21"></div>
+        </div>
+        <div class="sec-min-frame" id="min22">
+            <div class="the-mins" id="m22"></div>
+            <div class="the-secs" id="sec22"></div>
+        </div>
+        <div class="sec-min-frame" id="min23">
+            <div class="the-mins" id="m23"></div>
+            <div class="the-secs" id="sec23"></div>
+        </div>
+        <div class="sec-min-frame" id="min24">
+            <div class="the-mins" id="m24"></div>
+            <div class="the-secs" id="sec24"></div>
+        </div>
+        <div class="sec-min-frame" id="min25">
+            <div class="the-mins" id="m25"></div>
+            <div class="the-secs" id="sec25"></div>
+        </div>
+        <div class="sec-min-frame" id="min26">
+            <div class="the-mins" id="m26"></div>
+            <div class="the-secs" id="sec26"></div>
+        </div>
+        <div class="sec-min-frame" id="min27">
+            <div class="the-mins" id="m27"></div>
+            <div class="the-secs" id="sec27"></div>
+        </div>
+        <div class="sec-min-frame" id="min28">
+            <div class="the-mins" id="m28"></div>
+            <div class="the-secs" id="sec28"></div>
+        </div>
+        <div class="sec-min-frame" id="min29">
+            <div class="the-mins" id="m29"></div>
+            <div class="the-secs" id="sec29"></div>
+        </div>
+        <div class="sec-min-frame" id="min30">
+            <div class="the-mins" id="m30"></div>
+            <div class="the-secs" id="sec30"></div>
+        </div>
+        <div class="sec-min-frame" id="min31">
+            <div class="the-mins" id="m31"></div>
+            <div class="the-secs" id="sec31"></div>
+        </div>
+        <div class="sec-min-frame" id="min32">
+            <div class="the-mins" id="m32"></div>
+            <div class="the-secs" id="sec32"></div>
+        </div>
+        <div class="sec-min-frame" id="min33">
+            <div class="the-mins" id="m33"></div>
+            <div class="the-secs" id="sec33"></div>
+        </div>
+        <div class="sec-min-frame" id="min34">
+            <div class="the-mins" id="m34"></div>
+            <div class="the-secs" id="sec34"></div>
+        </div>
+        <div class="sec-min-frame" id="min35">
+            <div class="the-mins" id="m35"></div>
+            <div class="the-secs" id="sec35"></div>
+        </div>
+        <div class="sec-min-frame" id="min36">
+            <div class="the-mins" id="m36"></div>
+            <div class="the-secs" id="sec36"></div>
+        </div>
+        <div class="sec-min-frame" id="min37">
+            <div class="the-mins" id="m37"></div>
+            <div class="the-secs" id="sec37"></div>
+        </div>
+        <div class="sec-min-frame" id="min38">
+            <div class="the-mins" id="m38"></div>
+            <div class="the-secs" id="sec38"></div>
+        </div>
+        <div class="sec-min-frame" id="min39">
+            <div class="the-mins" id="m39"></div>
+            <div class="the-secs" id="sec39"></div>
+        </div>
+        <div class="sec-min-frame" id="min40">
+            <div class="the-mins" id="m40"></div>
+            <div class="the-secs" id="sec40"></div>
+        </div>
+        <div class="sec-min-frame" id="min41">
+            <div class="the-mins" id="m41"></div>
+            <div class="the-secs" id="sec41"></div>
+        </div>
+        <div class="sec-min-frame" id="min42">
+            <div class="the-mins" id="m42"></div>
+            <div class="the-secs" id="sec42"></div>
+        </div>
+        <div class="sec-min-frame" id="min43">
+            <div class="the-mins" id="m43"></div>
+            <div class="the-secs" id="sec43"></div>
+        </div>
+        <div class="sec-min-frame" id="min44">
+            <div class="the-mins" id="m44"></div>
+            <div class="the-secs" id="sec44"></div>
+        </div>
+        <div class="sec-min-frame" id="min45">
+            <div class="the-mins" id="m45"></div>
+            <div class="the-secs" id="sec45"></div>
+        </div>
+        <div class="sec-min-frame" id="min46">
+            <div class="the-mins" id="m46"></div>
+            <div class="the-secs" id="sec46"></div>
+        </div>
+        <div class="sec-min-frame" id="min47">
+            <div class="the-mins" id="m47"></div>
+            <div class="the-secs" id="sec47"></div>
+        </div>
+        <div class="sec-min-frame" id="min48">
+            <div class="the-mins" id="m48"></div>
+            <div class="the-secs" id="sec48"></div>
+        </div>
+        <div class="sec-min-frame" id="min49">
+            <div class="the-mins" id="m49"></div>
+            <div class="the-secs" id="sec49"></div>
+        </div>
+        <div class="sec-min-frame" id="min50">
+            <div class="the-mins" id="m50"></div>
+            <div class="the-secs" id="sec50"></div>
+        </div>
+        <div class="sec-min-frame" id="min51">
+            <div class="the-mins" id="m51"></div>
+            <div class="the-secs" id="sec51"></div>
+        </div>
+        <div class="sec-min-frame" id="min52">
+            <div class="the-mins" id="m52"></div>
+            <div class="the-secs" id="sec52"></div>
+        </div>
+        <div class="sec-min-frame" id="min53">
+            <div class="the-mins" id="m53"></div>
+            <div class="the-secs" id="sec53"></div>
+        </div>
+        <div class="sec-min-frame" id="min54">
+            <div class="the-mins" id="m54"></div>
+            <div class="the-secs" id="sec54"></div>
+        </div>
+        <div class="sec-min-frame" id="min55">
+            <div class="the-mins" id="m55"></div>
+            <div class="the-secs" id="sec55"></div>
+        </div>
+        <div class="sec-min-frame" id="min56">
+            <div class="the-mins" id="m56"></div>
+            <div class="the-secs" id="sec56"></div>
+        </div>
+        <div class="sec-min-frame" id="min57">
+            <div class="the-mins" id="m57"></div>
+            <div class="the-secs" id="sec57"></div>
+        </div>
+        <div class="sec-min-frame" id="min58">
+            <div class="the-mins" id="m58"></div>
+            <div class="the-secs" id="sec58"></div>
+        </div>
+        <div class="sec-min-frame" id="min59">
+            <div class="the-mins" id="m59"></div>
+            <div class="the-secs" id="sec59"></div>
+        </div>
+    </div>
+
+    <script>
+        // script here
+        // let a=59;
+        // document.getElementById(`sec${a}`).style.background="salmon";   // works
+
+        let currentSec;
+        let currentMin;
+        let currentHour;
+        setInterval(() => {
+            // positioning all the hands according to the current time
+            let myDate = new Date();
+            currentSec = myDate.getSeconds();
+            currentMin = myDate.getMinutes();
+            currentHour = myDate.getHours() % 12;
+            document.getElementById('second-frame').style.transform = `rotate(${currentSec * 6}deg)`;
+            document.getElementById('minute-frame').style.transform = `rotate(${(currentMin * 6) + (currentSec * (1 / 10))}deg)`;
+            document.getElementById('hour-frame').style.transform = `rotate(${(currentHour * 30) + (currentMin * (1 / 2))}deg)`;
+
+            // current hour-num en-light 
+            document.getElementById(`h${currentHour}`).style.color = `rgba(242, 209, 255, 0.950)`;
+            document.getElementById(`h${currentHour}`).style.fontWeight = `600`;
+            // document.getElementById(`h${currentHour}`).style.textShadow = `1px 1px 1px rgba(242, 209, 255, 0.950), -1px -1px 1px rgba(242, 209, 255, 0.950)`;
+            document.getElementById(`h${currentHour}`).style.border = `2px solid rgb(255, 115, 0)`;
+            // document.getElementById(`h${currentHour}`).style.backgroundColor = `rgba(255, 0, 64, 0.664)`;
+            document.getElementById(`h${currentHour}`).style.boxShadow = `inset 0px 0px 3px rgba(0, 0, 0, 0.966)`;
+
+            // previous hour-num reset & special case for the 11th hour
+            if (`${currentHour}` == 0) {
+                document.getElementById(`h11`).style.color = `rgba(233, 57, 130, 0.884)`;
+                document.getElementById(`h11`).style.fontWeight = `500`;
+                document.getElementById(`h11`).style.textShadow = `none`;
+                document.getElementById(`h11`).style.border = `2px solid rgb(0, 0, 0)`;
+                document.getElementById(`h11`).style.backgroundColor = `rgb(32, 31, 31)`;
+                document.getElementById(`h11`).style.boxShadow = `inset 0px 0px 15px rgba(5, 5, 5, 0.945)`;
+            }
+            else {
+                document.getElementById(`h${currentHour - 1}`).style.color = `rgba(233, 57, 130, 0.884)`;
+                document.getElementById(`h${currentHour - 1}`).style.fontWeight = `500`;
+                document.getElementById(`h${currentHour - 1}`).style.textShadow = `none`;
+                document.getElementById(`h${currentHour - 1}`).style.border = `2px solid rgb(0, 0, 0)`;
+                document.getElementById(`h${currentHour - 1}`).style.backgroundColor = `rgb(32, 31, 31)`;
+                document.getElementById(`h${currentHour - 1}`).style.boxShadow = `inset 0px 0px 15px rgba(5, 5, 5, 0.945)`;
+            }
+
+            // current seceond-dot en-light
+            document.getElementById(`sec${currentSec}`).style.backgroundColor = `rgba(247, 152, 10)`;
+            // document.getElementById(`sec${currentSec}`).style.transform = `scale(1.15)`;
+            document.getElementById(`sec${currentSec}`).style.boxShadow = `0px 0px 7px rgba(247, 152, 10)`;
+
+            // previous second-dots reset & special case for 59th second
+            if (`${currentSec}` == 0) {
+                document.getElementById(`sec59`).style.backgroundColor = `rgba(57, 65, 62, 0.712)`;
+                document.getElementById(`sec59`).style.transform = `scale(1)`;
+                document.getElementById(`sec59`).style.boxShadow = `none`;
+                console.log(`in if current sec : 00, hour:${currentHour} min:${currentMin} sec:${currentSec}`);
+            }
+            else {
+                document.getElementById(`sec${currentSec - 1}`).style.backgroundColor = `rgba(57, 65, 62, 0.712)`;
+                document.getElementById(`sec${currentSec - 1}`).style.transform = `scale(1)`;
+                document.getElementById(`sec${currentSec - 1}`).style.boxShadow = `none`;
+                console.log(`hour:${currentHour} min:${currentMin} sec:${currentSec}`);
+            }
+
+            // minute gauge
+            // minute-led meter on, for those past current minute
+            let n = currentMin;
+            for (i = 0; i <= n; i++) {
+                if (i % 5 == 0) {
+                    document.getElementById(`m${i}`).style.backgroundColor = `rgb(25, 111, 182)`;
+                }
+                else {
+                    document.getElementById(`m${i}`).style.backgroundColor = `rgba(35, 247, 159, 0.950)`;
+                }
+            }
+            // minute-led meter off, for those not past current minute
+            for (j = 59; j > currentMin; j--) {
+                document.getElementById(`m${j}`).style.backgroundColor = `rgba(57, 65, 62, 0.712)`;
+            }
+
+            // meridian-display AM-PM on-off
+            if (myDate.getHours() < 12) {
+                document.getElementById('am-dp').style.backgroundColor = `rgb(120, 175, 212)`;
+                document.getElementById('am-dp').style.boxShadow = `inset 1px 1px 15px rgb(32, 154, 235), inset -1px -1px 15px rgb(32, 154, 235)`;
+                document.getElementById('pm-dp').style.background = `none`;
+                document.getElementById('pm-dp').style.boxShadow = `none`;
+            }
+            else {
+                document.getElementById('pm-dp').style.backgroundColor = `rgb(120, 175, 212)`;
+                document.getElementById('pm-dp').style.boxShadow = `inset 1px 1px 15px rgb(32, 154, 235), inset -1px -1px 15px rgb(32, 154, 235)`;
+                document.getElementById('am-dp').style.background = `none`;
+                document.getElementById('am-dp').style.boxShadow = `none`;
+            }
+
+        }, 1000); 
+    </script>
+</body>
+
+</html>
